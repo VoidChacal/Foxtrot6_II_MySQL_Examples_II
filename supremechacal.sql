@@ -1,51 +1,79 @@
-CREATE DATABASE lojaroupa;
-USE lojaroupa;
+create database CRONOMETRAIS;
+Use CRONOMETRAIS;
 
-CREATE TABLE cliente(
-cd_cliente INT PRIMARY KEY AUTO_INCREMENT,
-nm_nome VARCHAR(450),
-cartao BOOLEAN,
-idade INT(10));
+CREATE TABLE ADM(
+CD_ADM INT PRIMARY KEY
+AUTO_INCREMENT,
+Key_senha VARCHAR(45),
+NE_Email VARCHAR(45));
 
-CREATE TABLE fornecedor(
-cd_fornecedor INT PRIMARY KEY AUTO_INCREMENT,
-nome VARCHAR(450),
-nomemarca VARCHAR(450));
+CREATE TABLE Provedora(
+CD_Provedora INT PRIMARY KEY AUTO_INCREMENT,
+NM_Provedora VARCHAR(65),
+CD_CNPJ VARCHAR(35),
+AS_Assinatura INT,
+IM_Logo LONGTEXT,
+NM_CEO VARCHAR(60));
 
-CREATE TABLE estoque(
-cd_estoque INT PRIMARY KEY AUTO_INCREMENT,
-qt_roupas INT(10));
+CREATE TABLE Usuario(
+cd_Usuario INT PRIMARY KEY
+AUTO_INCREMENT,
+NM_Nome VARCHAR(60),
+Key_senha VARCHAR(60),
+NE_Email VARCHAR(100),
+NR_Telefone VARCHAR(20),
+EN_Endereco VARCHAR(100),
+AS_Assinatura INT,
+IM_ImgPerfil LONGTEXT);
 
-CREATE TABLE roupa(
-cd_roupa INT PRIMARY KEY AUTO_INCREMENT,
-vl_roupa DECIMAL(45),
-ds_cor VARCHAR(100),
-ds_tipo VARCHAR(100),
-tamanho DECIMAL(45),
-id_estoque INT,
-FOREIGN KEY (id_estoque) REFERENCES estoque(cd_estoque),
-id_fonecedor INT,
-FOREIGN KEY (id_fonecedor) REFERENCES fornecedor(cd_fornecedor));
+CREATE TABLE Rascron(
+CD_Rascron INT PRIMARY KEY
+AUTO_INCREMENT,
+CD_Rastreamento INT,
+NR_Serie INT,
+NR_Modelo INT,
+NR_Estoque INT);
 
-CREATE TABLE categoria(
-cd_categoria INT PRIMARY KEY AUTO_INCREMENT,
-ds_sexo VARCHAR(200),
-ds_estilo VARCHAR(200),
-ds_cultura VARCHAR(200),
-id_roupa INT,
-FOREIGN KEY (id_roupa) REFERENCES roupa(cd_roupa));
+CREATE TABLE Horarios(
+CD_Horarios INT PRIMARY KEY
+AUTO_INCREMENT);
 
-CREATE TABLE carrinho(
-cd_carrinho INT PRIMARY KEY AUTO_INCREMENT,
-id_roupa INT,
-FOREIGN KEY (id_roupa) REFERENCES roupa(cd_roupa),
-id_cliente INT,
-FOREIGN KEY (id_cliente) REFERENCES cliente(cd_cliente),
-quantidade INT(45));
 
-CREATE TABLE compra(
-cd_compra INT PRIMARY KEY AUTO_INCREMENT,
-id_carrinho INT,
-FOREIGN KEY (id_carrinho) REFERENCES carrinho(cd_carrinho));
-valor DECIMAL(45);
-datacompra VARCHAR(45));
+CREATE TABLE Onibus(
+CD_Onibus INT PRIMARY KEY
+AUTO_INCREMENT,
+CD_Placa VARCHAR(7),
+RT_Rota LONGTEXT,
+DS_Descricao VARCHAR(200),
+BG_Bagagem INT,
+AV_Avaliacao INT,
+BA_Bagagem TINYINT,
+ST_Status VARCHAR(15),
+IM_Foto LONGTEXT,
+id_Provedora INT,
+FOREIGN KEY (id_Provedora) REFERENCES Provedora(CD_Provedora),
+id_Rascron INT,
+FOREIGN KEY (id_Rascron) REFERENCES Rascron(CD_Rascron),
+id_Horarios INT,
+FOREIGN KEY (id_Horarios) REFERENCES Horarios(CD_Horarios)
+);
+
+CREATE TABLE Tempos(
+CD_Tempos INT PRIMARY KEY
+AUTO_INCREMENT,
+TP_Inicial INT,
+TP_Final INT,
+DS_Local INT,
+id_Horarios INT,
+FOREIGN KEY (id_Horarios)REFERENCES Horarios(CD_Horarios));
+
+CREATE TABLE Avaliacao(
+CD_Avaliacao INT PRIMARY KEY
+AUTO_INCREMENT,
+DS_Comentario LONGTEXT,
+NT_Nota INT,
+id_Usuario INT,
+FOREIGN KEY (id_Usuario) REFERENCES Usuario(CD_Usuario),
+id_Onibus INT,
+FOREIGN KEY (id_Onibus) REFERENCES Onibus(CD_Onibus)
+);
